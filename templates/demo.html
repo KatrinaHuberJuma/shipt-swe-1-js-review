@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sharkwords Demo</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+  </head>
+  <body>
+    <section id="shark-img">
+      <img src="/static/images/guess0.png">
+    </section>
+
+    <a id="play-again" style="display: none;">
+      The shark got you! Click here to play again.
+    </a>
+
+    <section id="word-container"></section>
+
+    <section id="letter-buttons"></section>
+
+    <script>
+      const WORDS=["strawberry","orange","apple","banana","pineapple","kiwi","peach","pecan","eggplant","durian","peanut","chocolate"];let numWrong=0;const createDivsForChars=n=>{for(const t of n)$("#word-container").append(`<div class="letter-box ${t}"></div>`)},generateLetterButtons=()=>{const n=$("#letter-buttons");for(const t of"abcdefghijklmnopqrstuvwxyz")n.append(`<button>${t}</button>`)},disableLetterButton=n=>{$(n).attr("disabled",!0)},isLetterInWord=n=>$(`div.${n}`).length>0,isWinner=n=>{for(const t of n){if($(`div.${t}`)[0].innerHTML!==t)return!1}return!0},handleWinner=()=>{const n=$("#play-again");n.html("🎉Yay! You won! Click here to play again!"),n.css({display:"block",color:"darkgreen"})},handleCorrectGuess=n=>{$(`div.${n}`).html(n)},handleWrongGuess=()=>{numWrong+=1,$("img").attr("src",`/static/images/guess${numWrong}.png`),5===numWrong&&($("button").attr("disabled",!0),$("#play-again").css({display:"block"}))},resetGame=()=>{window.location="/sharkwords"};!function(){const n=WORDS[Math.floor(Math.random()*WORDS.length)];createDivsForChars(n),generateLetterButtons(),$("button").on("click",t=>{const e=t.target;disableLetterButton(e);const a=e.innerHTML;isLetterInWord(a)?handleCorrectGuess(a):(numWrong+=1,$("img").attr("src",`/static/images/guess${numWrong}.png`),5===numWrong&&($("button").attr("disabled",!0),$("#play-again").css({display:"block"}))),isWinner(n)&&handleWinner()}),$("#play-again").on("click",()=>{window.location.reload()})}();
+    </script>
+  </body>
+</html>
