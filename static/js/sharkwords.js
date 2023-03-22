@@ -96,13 +96,11 @@ const resetGame = () => {
 
 // This is like if __name__ == '__main__' in Python
 //
-(function startGame() {
-  // Math.random() gives us a random number between 0 and 1
-  // we multiply it by the length of the list to get a random
-  // index in the list and then round down since it may be a decimal
-  const word = WORDS[Math.floor(Math.random() * WORDS.length)];
+function startGame(word) {
+  console.log('word is ', word)
   createDivsForChars(word);
   generateLetterButtons();
+  
 
   const buttons = document.querySelectorAll('button');
 
@@ -123,4 +121,9 @@ const resetGame = () => {
 
   document.querySelector('#play-again').addEventListener('click', resetGame);
   document.querySelector('#win').addEventListener('click', resetGame);
-})();
+}
+
+
+fetch('/word')
+  .then(response => response.json())
+  .then(data => startGame(data.word))
